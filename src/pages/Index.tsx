@@ -1,7 +1,9 @@
-import { Gem, Lock, Sparkles, ShieldCheck, Heart, Leaf, Plus, Minus, Mail } from "lucide-react"
+import { Gem, Sparkles, ShieldCheck, Heart, Leaf, Plus, Minus, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import Icon from "@/components/ui/icon"
+
+const CONTACT_URL = "https://functions.poehali.dev/6f352a73-e887-4380-b804-3eb2137e9a37"
 
 interface FAQ {
   question: string
@@ -10,9 +12,31 @@ interface FAQ {
 
 const Index = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [form, setForm] = useState({ name: '', contact: '', message: '' })
+  const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index)
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setFormStatus('sending')
+    try {
+      const res = await fetch(CONTACT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      })
+      if (res.ok) {
+        setFormStatus('success')
+        setForm({ name: '', contact: '', message: '' })
+      } else {
+        setFormStatus('error')
+      }
+    } catch {
+      setFormStatus('error')
+    }
   }
 
   const faqs: FAQ[] = [
@@ -292,44 +316,65 @@ const Index = () => {
               {/* Left Column - Contact Form */}
               <div className="rounded-2xl bg-white/95 text-black p-8 shadow-2xl">
                 <h3 className="text-2xl font-bold mb-6">Оставить заявку</h3>
-                <form className="space-y-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      Имя
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      placeholder="Ваше имя"
-                    />
+                {formStatus === 'success' ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                      <Icon name="Check" size={32} className="text-green-600" />
+                    </div>
+                    <h4 className="text-xl font-semibold mb-2">Заявка отправлена!</h4>
+                    <p className="text-gray-600">Айсылу свяжется с вами в ближайшее время.</p>
+                    <button onClick={() => setFormStatus('idle')} className="mt-6 text-sm text-gray-500 underline">Отправить ещё</button>
                   </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium mb-2">
-                      Email или телефон
-                    </label>
-                    <input
-                      type="text"
-                      id="email"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      placeholder="Как с вами связаться"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium mb-2">
-                      Что вас интересует?
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={5}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-                      placeholder="Расскажите об украшении, поводе или запишитесь на мастер-класс..."
-                    />
-                  </div>
-                  <Button className="w-full bg-black text-white hover:bg-gray-800 rounded-lg py-3 font-normal text-base">
-                    Отправить
-                  </Button>
-                </form>
+                ) : (
+                  <form className="space-y-6" onSubmit={handleSubmit}>
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium mb-2">Имя</label>
+                      <input
+                        type="text"
+                        id="name"
+                        value={form.name}
+                        onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        placeholder="Ваше имя"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="contact" className="block text-sm font-medium mb-2">Email или телефон</label>
+                      <input
+                        type="text"
+                        id="contact"
+                        value={form.contact}
+                        onChange={e => setForm(f => ({ ...f, contact: e.target.value }))}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        placeholder="Как с вами связаться"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="message" className="block text-sm font-medium mb-2">Что вас интересует?</label>
+                      <textarea
+                        id="message"
+                        rows={5}
+                        value={form.message}
+                        onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                        placeholder="Расскажите об украшении, поводе или запишитесь на мастер-класс..."
+                        required
+                      />
+                    </div>
+                    {formStatus === 'error' && (
+                      <p className="text-red-500 text-sm">Что-то пошло не так. Попробуйте ещё раз.</p>
+                    )}
+                    <Button
+                      type="submit"
+                      disabled={formStatus === 'sending'}
+                      className="w-full bg-black text-white hover:bg-gray-800 rounded-lg py-3 font-normal text-base disabled:opacity-60"
+                    >
+                      {formStatus === 'sending' ? 'Отправляем...' : 'Отправить'}
+                    </Button>
+                  </form>
+                )}
               </div>
 
               {/* Right Column - Contact Info */}
