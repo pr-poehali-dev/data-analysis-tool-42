@@ -70,7 +70,7 @@ const Index = () => {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: "url(https://cdn.poehali.dev/projects/da4606ca-1797-411f-8a60-714c94b86306/files/4f693bb1-6de2-421a-884a-89767b9ce949.jpg)",
+            backgroundImage: "url(https://cdn.poehali.dev/projects/da4606ca-1797-411f-8a60-714c94b86306/bucket/be6b5e4f-efaa-43a4-9f45-46d450035c39.jpg)",
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/85" />
@@ -184,6 +184,39 @@ const Index = () => {
               </div>
               <h3 className="text-xl font-semibold mb-4">Мастер-классы</h3>
               <p className="text-white/80 leading-relaxed">Научитесь плести обереги сами в уютной студии.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery Section */}
+      <section className="relative z-10 py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-5xl md:text-6xl font-bold tracking-tight mb-4 text-balance">Наши работы</h2>
+            <p className="text-xl text-white/80">Украшения, созданные с любовью в студии АЙЛИС</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="rounded-2xl overflow-hidden aspect-square">
+              <img
+                src="https://cdn.poehali.dev/projects/da4606ca-1797-411f-8a60-714c94b86306/bucket/5fb91af8-81ae-4070-985f-0b710bd378f1.jpg"
+                alt="Браслет из розового кварца и оникса"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+            <div className="rounded-2xl overflow-hidden aspect-square">
+              <img
+                src="https://cdn.poehali.dev/projects/da4606ca-1797-411f-8a60-714c94b86306/bucket/54a18b2d-6c7f-42cf-98e1-6b05f37c4526.jpg"
+                alt="Колье и чокер из жемчуга и бусин"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+            <div className="rounded-2xl overflow-hidden aspect-square">
+              <img
+                src="https://cdn.poehali.dev/projects/da4606ca-1797-411f-8a60-714c94b86306/bucket/3e13e428-434f-415d-8561-2fdb64d2941a.jpg"
+                alt="Авторское колье с жемчугом и цепочками"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+              />
             </div>
           </div>
         </div>
