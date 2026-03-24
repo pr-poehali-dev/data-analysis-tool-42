@@ -100,10 +100,12 @@ const Index = () => {
           {/* Action Buttons */}
           <div className="flex items-center gap-3">
             <a
-              href="#"
+              href="https://t.me/ailis_katalog"
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-4 py-2 bg-black/40 ring-1 ring-white/20 backdrop-blur rounded-full hover:bg-black/50 transition-colors"
             >
-              Instagram
+              Telegram
             </a>
             <Button className="bg-white text-black hover:bg-white/90 rounded-full px-6">Заказать</Button>
           </div>
@@ -485,6 +487,16 @@ const Index = () => {
                       </a>
                     </li>
                   ))}
+                  <li>
+                    <a
+                      href="https://t.me/ailis_katalog"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white/70 hover:text-white transition-colors text-sm leading-relaxed flex items-center gap-1"
+                    >
+                      Каталог в Telegram
+                    </a>
+                  </li>
                 </ul>
               </div>
 
